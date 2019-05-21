@@ -35,6 +35,10 @@ public class Main extends Application implements ActionListener{
 		      EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
 		         @Override 
 		         public void handle(MouseEvent e) { 
+		        	 // Get that buttons values
+		        	 // Update the character
+		        	 // Select new storyClip
+		        	 // Display storyClip
 		            getNewImage();
 		         } 
 		      };  
@@ -112,13 +116,11 @@ public class Main extends Application implements ActionListener{
 		myChar = new Character();
 		loadChar();
 		
-		
+		// Temp to show all dictionary items
 		for (int i=0; i < myChar.dictionary.size(); i++)
 		{
 			System.out.println(myChar.dictionary.get(i));
 		}
-		
-		System.out.println(myChar.getDictionary("main_color"));
 		
 		launch(args);
 		
@@ -127,7 +129,8 @@ public class Main extends Application implements ActionListener{
 	public static void loadChar()
 	{
 		try {
-			myChar.loadCharacter();
+			// TODO Send the player's selected or new character name
+			myChar.loadCharacter("");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

@@ -23,35 +23,28 @@ import javax.swing.JOptionPane;
  */
 public class Character{
 
-	public int knowledge;
-	public int cunning;
-	public int language;
-	public int strength;
-	public int fighting;
-	public int medicine;
-	public int wildcard;
+	public int style;
+	public int speed;
 	
 	public ArrayList<String> dictionary = new ArrayList<String>();
 	
 	public Character()
 	{
-		knowledge = 0;
-		cunning = 0;
-		language = 0;
-		strength = 0;
-		fighting = 0;
-		medicine = 0;
-		wildcard = 0;
+		style = 0;
+		speed = 0;
 		
 		dictionary.add(""); // first location is users name
 	}
 	
-	public void loadCharacter() throws IOException {
+	public void loadCharacter(String username) throws IOException {
+		
+		username = "kingphilip";
+		
 		// ask user to pick character
 		
 		
 		// load csv for character
-		BufferedReader reader = new BufferedReader(new FileReader("kingphilip.csv"));
+		BufferedReader reader = new BufferedReader(new FileReader(username + ".csv"));
 			
 		// read file line by line
 		String line = null;
@@ -68,13 +61,8 @@ public class Character{
 				} else if (lineNumber == 1)
 				{
 					String[] data = scanner.nextLine().split(","); // second line stores all numerical stats
-					knowledge = Integer.parseInt(data[0]);
-					cunning = Integer.parseInt(data[1]);
-					language = Integer.parseInt(data[2]);
-					strength = Integer.parseInt(data[3]);
-					fighting = Integer.parseInt(data[4]);
-					medicine = Integer.parseInt(data[5]);
-					wildcard = Integer.parseInt(data[6]);
+					style = Integer.parseInt(data[0]);
+					speed = Integer.parseInt(data[1]);
 				} else {
 					String[] data = scanner.nextLine().split(","); // each additional line has a title,text pair (starts at dictionary.get(1). Odds are name, evens are values)
 					dictionary.add(data[0]);
@@ -101,8 +89,7 @@ public class Character{
 		writer.write(line);
 		writer.newLine();
 		
-		line  = Integer.toString(knowledge) + "," + Integer.toString(cunning) + "," + Integer.toString(language)
-			+ "," + Integer.toString(strength) + "," + Integer.toString(fighting) + "," + Integer.toString(medicine) + "," + Integer.toString(wildcard);
+		line  = Integer.toString(style) + "," + Integer.toString(speed);
 		writer.write(line);
 		writer.newLine();
 		
