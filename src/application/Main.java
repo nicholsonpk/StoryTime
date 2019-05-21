@@ -23,7 +23,7 @@ import javafx.scene.input.MouseEvent;
 
 public class Main extends Application implements ActionListener{
 	
-	static Character myChar;
+	static User myChar;
 	static ImageView viewImage;
 	static Text text1;
 	
@@ -113,7 +113,7 @@ public class Main extends Application implements ActionListener{
 	
 	public static void main(String[] args) {
 		
-		myChar = new Character();
+		myChar = new User();
 		loadChar();
 		
 		// Temp to show all dictionary items
@@ -130,7 +130,7 @@ public class Main extends Application implements ActionListener{
 	{
 		try {
 			// TODO Send the player's selected or new character name
-			myChar.loadCharacter("");
+			myChar.loadUser("");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -141,7 +141,7 @@ public class Main extends Application implements ActionListener{
 	public static void saveChar()
 	{
 		try {
-			myChar.saveCharacter();
+			myChar.saveUser();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

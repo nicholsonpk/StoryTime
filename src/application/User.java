@@ -21,14 +21,14 @@ import javax.swing.JOptionPane;
  * @author nicholsonp
  *
  */
-public class Character{
+public class User{
 
 	public int style;
 	public int speed;
 	
 	public ArrayList<String> dictionary = new ArrayList<String>();
 	
-	public Character()
+	public User()
 	{
 		style = 0;
 		speed = 0;
@@ -36,7 +36,7 @@ public class Character{
 		dictionary.add(""); // first location is users name
 	}
 	
-	public void loadCharacter(String username) throws IOException {
+	public void loadUser(String username) throws IOException {
 		
 		username = "kingphilip";
 		
@@ -75,10 +75,10 @@ public class Character{
 			
 		} // end while readLine
 		reader.close();
-	} // end loadCharacter
+	} // end loadUser
 	
 	
-	public void saveCharacter() throws IOException {
+	public void saveUser() throws IOException {
 		
 		String filename = dictionary.get(0) + ".csv";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
@@ -101,7 +101,7 @@ public class Character{
 		}
 		
 		writer.close();
-	} // end saveCharacter
+	} // end saveUser
 	
 	/*
 	 * getDictionary sends back the value for a given word name.
