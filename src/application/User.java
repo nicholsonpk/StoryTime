@@ -116,6 +116,7 @@ public class User{
 		if (index != -1)
 			return dictionary.get(index + 1);// add one to get the correct value
 		else {
+			// type not found, ask the user to input it
 			String newTerm = askForTerm(type);
 			return newTerm;
 		}
@@ -129,4 +130,17 @@ public class User{
 		return output;
 	}
 	
-} // end character Class
+	//
+	// GETS
+	//
+	public int getStyle()
+	{
+		return style;
+	}
+	
+	public int getSpeed()
+	{
+		return speed;
+	}
+	
+} // end User Class

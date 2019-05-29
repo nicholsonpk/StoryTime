@@ -1,0 +1,28 @@
+00100Run!
+001100,0
+001201
+00130Here we are, out on the open road. What a time to be alive!
+00140Run,1,1
+00150Hide,1,0
+00160Pass out,0,1
+00101Header
+001110,0
+001211
+00131Body
+00141Choice 1,0,0
+00151Choice 2,0,0
+00161Choice 3,0,0
+00102Another tough road
+001120,0
+001224
+00132This is the third story clip for this image.
+00142Bunker down,0,-1
+00152Run away,0,1
+00162Fight back,-1,0
+00103Part 4
+001130,0
+001231
+00133Body
+00143Choice 1,0,0
+00153Choice 2,0,0
+00163Choice 3,0,0

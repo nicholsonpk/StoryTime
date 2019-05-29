@@ -3,6 +3,7 @@ package application;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.application.Application;
@@ -12,7 +13,7 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -23,18 +24,30 @@ import javafx.scene.input.MouseEvent;
 
 public class Main extends Application implements ActionListener{
 	
-	static User myChar;
-	static ImageView viewImage;
-	static Text text1;
+	private static User myChar;
+	private static ImageView viewImage;
+	private static Text text1;
+	
+	private Label content = new Label("My Label");
+	
+	private Button choice1; 
+	private Button choice2;
+	private Button choice3;
+    
+	private int selectedCSVFile = 1;
+    private int selectedStoryClip = 0;
+	
+	private static ArrayList<StoryClip> storyClipArray = new ArrayList<StoryClip>();
+	private Loading loadedData = new Loading();
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			
 			// Show Start/Options/Exit stage first
-			Menu pauseMenu = new Menu(this);
-			Scene pauseScene = pauseMenu.showMenu();
-			primaryStage.setScene(pauseScene);
+			//Menu pauseMenu = new Menu(this);
+			//Scene pauseScene = pauseMenu.showMenu();
+			//primaryStage.setScene(pauseScene);
 			
 			//Creating the mouse event handler 
 		      EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
@@ -44,7 +57,8 @@ public class Main extends Application implements ActionListener{
 		        	 // Update the character
 		        	 // Select new storyClip
 		        	 // Display storyClip
-		            getNewImage();
+		        	 
+		        	loadNextStoryClip();
 		         } 
 		      };  
 			
@@ -62,16 +76,15 @@ public class Main extends Application implements ActionListener{
 		      
 			text1 = new Text("TITLE"); 
 			gridpane.add(text1, 2, 1);
-		    
-			TextArea content = new TextArea();
+			
 			content.setMinSize(500, 250);
-			content.setDisable(true);
+			content.setAlignment(Pos.TOP_LEFT);
 			gridpane.add(content, 2, 2);
 		       
 		    //Creating Buttons 
-			Button choice1 = new Button("CHOICE 1");  
-			Button choice2 = new Button("CHOICE 2"); 
-		    Button choice3 = new Button("CHOICE 3");
+			choice1 = new Button("CHOICE 1");  
+			choice2 = new Button("CHOICE 2"); 
+		    choice3 = new Button("CHOICE 3");
 		    choice1.setDisable(false);
 		    choice1.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler); 
 		    choice2.setDisable(false);
@@ -104,7 +117,7 @@ public class Main extends Application implements ActionListener{
 		    primaryStage.setTitle("Story Time"); 
 		         
 		    //Adding scene to the stage 
-		    //primaryStage.setScene(scene); 
+		    primaryStage.setScene(scene); 
 		         
 		    //Displaying the contents of the stage 
 		    primaryStage.show(); 
@@ -157,9 +170,8 @@ public class Main extends Application implements ActionListener{
 		}
 	}
 	
-	public static void getNewImage() {
-	    Random r = new Random();
-	    int imageNumber  = r.nextInt(139) + 1;
+	public static void getNewImage(int imageNumber)
+	{
 	    Image image = new Image("File:///" + System.getProperty("user.dir") + "/images/SpellBook05_" + imageNumber + ".png");
 	    viewImage.setImage(image);
 	    text1.setText(Integer.toString(imageNumber));
@@ -173,6 +185,51 @@ public class Main extends Application implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	//
+	// Loads a CSV at random
+	// Then it finds which clips the user qualifies for
+	// Then displays this to the fields
+	//
+	
+	public void loadNextStoryClip()
+	{
+		ArrayList<Integer> possibleStoryClip = new ArrayList<Integer>();
+		
+		// Random value 1-139
+		Random r = new Random();
+		selectedCSVFile  = r.nextInt(139) + 1;
+		selectedStoryClip = 0;
+		
+		selectedCSVFile = 23;
+		
+		storyClipArray = loadedData.loadThis(storyClipArray, selectedCSVFile);
+		
+		getNewImage(selectedCSVFile);
+		
+		// Loop through array to get list of available entries
+		for (int i=0; i < storyClipArray.size(); i++)
+		{
+			// If conditions are met, add to list of possible choices
+			if (myChar.getSpeed() >= storyClipArray.get(selectedStoryClip).getSpeedReq() &&
+					myChar.getStyle() >= storyClipArray.get(selectedStoryClip).getStyleReq())
+			{
+				possibleStoryClip.add(i);
+			}
+		}
+		
+		// Pick one of the storyClips
+		selectedStoryClip = r.nextInt(possibleStoryClip.size());
+		
+		// Set clip to fields
+		text1.setText(storyClipArray.get(selectedStoryClip).getTitleText());
+		content.setText(storyClipArray.get(selectedStoryClip).getText());
+		choice1.setText(storyClipArray.get(selectedStoryClip).getChoice(0));
+		choice2.setText(storyClipArray.get(selectedStoryClip).getChoice(1));
+		choice3.setText(storyClipArray.get(selectedStoryClip).getChoice(2));
 		
 	}
 }

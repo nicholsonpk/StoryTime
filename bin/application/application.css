@@ -2,7 +2,7 @@
 
 
 .header {
-	-fx-font: 63px arial, sans-serif;
+	-fx-font: 40px arial, sans-serif;
 	-fx-fill: yellow;
 	-fx-stroke: red;
     -fx-stroke-width: 1;
