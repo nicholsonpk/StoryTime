@@ -13,9 +13,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
+import javafx.scene.control.TextInputDialog;
 
 /**
  * @author nicholsonp
@@ -23,8 +24,8 @@ import javax.swing.JOptionPane;
  */
 public class User{
 
-	public int style;
-	public int speed;
+	private int style;
+	private int speed;
 	
 	public ArrayList<String> dictionary = new ArrayList<String>();
 	
@@ -38,9 +39,8 @@ public class User{
 	
 	public void loadUser(String username) throws IOException {
 		
-		username = "kingphilip";
-		
-		// ask user to pick character
+		// set username from menu
+		dictionary.set(0, username);
 		
 		
 		// load csv for character
@@ -80,6 +80,8 @@ public class User{
 	
 	public void saveUser() throws IOException {
 		
+		// 0 stores the username
+		// 1 stores the style and speed
 		String filename = dictionary.get(0) + ".csv";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 		
@@ -93,7 +95,7 @@ public class User{
 		writer.write(line);
 		writer.newLine();
 		
-		for (int i = 1; i < dictionary.size(); i+=2)
+		for (int i = 2; i < dictionary.size(); i+=2)
 		{
 			line  = dictionary.get(i) + "," + dictionary.get(i+1);
 			writer.write(line);
@@ -102,6 +104,7 @@ public class User{
 		
 		writer.close();
 	} // end saveUser
+	
 	
 	/*
 	 * getDictionary sends back the value for a given word name.
@@ -124,10 +127,22 @@ public class User{
 	
 	private String askForTerm(String type)
 	{
-		String output = JOptionPane.showInputDialog(null, "Enter a new " + type + ":", "Add Term", JOptionPane.OK_OPTION);
+		
+		TextInputDialog dialog = new TextInputDialog("");
+		dialog.setTitle("Enter a new term:");
+		dialog.setHeaderText("Use your imagination!");
+		dialog.setContentText("Please enter your [" + type + "] term:");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+
+		// The Java 8 way to get the response value (with lambda expression).
+		result.ifPresent(name -> System.out.println("Your name: " + name));
+		
+		// add both the request term type and the result
 		dictionary.add(type);
-		dictionary.add(output);
-		return output;
+		dictionary.add(result.get());
+		return result.get();
 	}
 	
 	//
