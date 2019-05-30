@@ -18,6 +18,7 @@ public class Main extends Application implements ActionListener{
 	public void start(Stage primaryStage) {
 		try {
 			
+			// Save stage to be used by other functions
 			currentStage = primaryStage;
 			currentStage.setMinWidth(800);
 			currentStage.setHeight(600);
