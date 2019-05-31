@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package application;
 
 import java.io.IOException;
@@ -12,16 +13,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
- * @author nicho
+ * @author nicholsonpk
  *
  */
 public class Game {
@@ -32,11 +33,11 @@ public class Game {
 	private static ArrayList<StoryClip> storyClipArray = new ArrayList<StoryClip>();
 	private Loading loadedData = new Loading();
 
-	private static User myChar;
+	private static User myChar = new User();
 	private static ImageView viewImage;
 	private static Text text1;
 	
-	private Label content = new Label("My Label");
+	private TextFlow content = new TextFlow();
 	
 	private Button choice1; 
 	private Button choice2;
@@ -60,7 +61,7 @@ public class Game {
 		gridpane.setAlignment(Pos.CENTER);
 		
 		content.setMinSize(500, 250);
-		content.setAlignment(Pos.TOP_LEFT);
+		//content.setAlignment(Pos.TOP_LEFT);
 		gridpane.add(content, 2, 2);
 	       
 	    //Creating Buttons 
@@ -88,20 +89,6 @@ public class Game {
 	    //Setting the vertical and horizontal gaps between the columns 
 	    gridpane.setVgap(5); 
 	    gridpane.setHgap(5);
-	    
-		myChar = new User();
-		try {
-			myChar.loadUser("kingphilip");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// Temp to show all dictionary items
-		for (int i=0; i < myChar.dictionary.size(); i++)
-		{
-			System.out.println(myChar.dictionary.get(i));
-		}
 		
 	    //Creating a scene object 
 	    scene = new Scene(gridpane);  
@@ -114,12 +101,12 @@ public class Game {
     EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
        @Override 
        public void handle(MouseEvent e) { 
-      	 // Get that buttons values
-      	 // Update the character
-      	 // Select new storyClip
-      	 // Display storyClip
-      	 
-      	loadNextStoryClip();
+    	   // Get that buttons values
+    	   // Update the character
+    	   // Select new storyClip
+    	   // Display storyClip
+    	   loadNextStoryClip();
+    	   saveChar();
        } 
     };  
     
@@ -153,9 +140,12 @@ public class Game {
 	    text1.setText(Integer.toString(imageNumber));
 	}
 	
-	public void startNewUser()
+	public void startNewUser(String newUserResultString)
 	{
-		System.out.println("New user created");
+		myChar.setCharacterName(newUserResultString);
+		
+		// update our users file to add this new user
+		
 	}
 	
 	//
@@ -195,7 +185,10 @@ public class Game {
 		
 		// Set clip to fields
 		text1.setText(storyClipArray.get(selectedStoryClip).getTitleText());
-		content.setText(storyClipArray.get(selectedStoryClip).getText());
+		
+		// Store string as Text for TextFlow content
+		
+		
 		choice1.setText(storyClipArray.get(selectedStoryClip).getChoice(0));
 		choice2.setText(storyClipArray.get(selectedStoryClip).getChoice(1));
 		choice3.setText(storyClipArray.get(selectedStoryClip).getChoice(2));
@@ -203,20 +196,33 @@ public class Game {
 		// Find all instances of user generated input
 		// and replace the temp with that value
 		// If not found, it will ask user to enter one
-		if (content.getText().indexOf("[") >= 0)
+		
+		if (storyClipArray.get(selectedStoryClip).getText().indexOf("[") >= 0)
 		{
-			int start = content.getText().indexOf("[");
-			int end = content.getText().indexOf("]");
+			int start = storyClipArray.get(selectedStoryClip).getText().indexOf("[");
+			int end = storyClipArray.get(selectedStoryClip).getText().indexOf("]");
 			
-			String returnedText = myChar.getDictionary(content.getText().substring(start + 1, end));
-			content.setText(content.getText().replace(content.getText().substring(start, end + 1), returnedText));
+			String returnedText = myChar.getDictionary(storyClipArray.get(selectedStoryClip).getText().substring(start + 1, end));
+			
+			storyClipArray.get(selectedStoryClip).setText(storyClipArray.get(selectedStoryClip).getText().replace(storyClipArray.get(selectedStoryClip).getText().substring(start, end + 1), returnedText));
 		}
+		
+		Text thisText = new Text(storyClipArray.get(selectedStoryClip).getText());
+		
+		content.getChildren().clear();
+		content.getChildren().add(thisText);
 }
+	
+	//
+	// GETS
+	//
 	public Scene getScene()
 	{
 		return scene;
 	}
 	
+	
+	// Called when the window size is changed
 	public void setNewScreenSize(double d, double e)
 	{
 		gridpane.setMinSize(d,e);

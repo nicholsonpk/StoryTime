@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -22,9 +23,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import javafx.event.ActionEvent;
 
@@ -45,6 +51,8 @@ public class Menu {
 	
 	Main root;
 	
+	ArrayList<String> allUsers = new ArrayList<String>();
+	
 	public Menu(Main main)
 	{
 		root = main;
@@ -60,15 +68,28 @@ public class Menu {
 		newButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	
-            	List<String> choices = new ArrayList<>();
-            	
             	// Find all created users and add them to list
-            	
-            	choices.add("New User");
-            	// LOOP
+            	BufferedReader reader;
+				try {
+					reader = new BufferedReader(new FileReader("users.csv"));
+					
+					String line = "";
+					Scanner scanner;
+					
+					while ((line = reader.readLine()) != null) {
+						scanner = new Scanner(line);
+						
+						while (scanner.hasNext()) {
+							allUsers.add(scanner.nextLine());
+						}
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             	
 
-            	ChoiceDialog<String> dialog = new ChoiceDialog<>("New User", choices);
+            	ChoiceDialog<String> dialog = new ChoiceDialog<>("New User", allUsers);
             	dialog.setTitle("Choice the user");
             	dialog.setHeaderText("");
             	dialog.setContentText("Choose your character:");
@@ -81,11 +102,34 @@ public class Menu {
             		
             		if (resultString != null)
             		{
-            			if (resultString == "New User")
+            			if (resultString.contentEquals("New User"))
             			{
-            				System.out.println("New user selected");// Start new user
+            				// Create new user file with input name
+            				TextInputDialog newUserDialog = new TextInputDialog("");
+            				newUserDialog.setTitle("Your username:");
+            				newUserDialog.setHeaderText("");
+            				newUserDialog.setContentText("What is your username? ");
+
+            				// Traditional way to get the response value.
+            				Optional<String> newUserResult = newUserDialog.showAndWait();
+            				
+            				String newUserResultString = "";
+            				
+            				if (newUserResult.isPresent())
+            				{
+            					// Make it a string
+            					newUserResultString = newUserResult.get();
+            					
+            					// Add it to allUsers and start the user in the game
+            					allUsers.add(newUserResultString);
+            					main.currentGame.startNewUser(newUserResultString);
+            					
+            					// Save users file
+            					saveAllUsers();
+            				}
+            				
             			} else {
-            				System.out.println(resultString + " selected");// Load current user
+            				main.currentGame.loadChar(resultString);
             			}
             			
                         // Load the game scene
@@ -151,6 +195,31 @@ public class Menu {
 	{
 		menuVBox.setMinSize(d,e);
 		menuPane.setMinSize(d,e);
+	}
+	
+	public void saveAllUsers()
+	{
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter("users.csv"));
+			
+			for (int i=0; i < allUsers.size(); i++)
+			{
+				writer.write(allUsers.get(i));
+				if (i < allUsers.size() - 1)
+				{
+					writer.newLine();
+				}
+			}
+			
+			writer.close();
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 }

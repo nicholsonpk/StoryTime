@@ -2,6 +2,10 @@ package application;
 	
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -12,11 +16,23 @@ import javafx.scene.Scene;
 public class Main extends Application implements ActionListener{
 	
 	Stage currentStage = new Stage();
-	Game currentGame = new Game();
+	public Game currentGame = new Game();
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			
+			// Loads all users and, if there's no
+			// users file then create it
+			try {
+				// Pull file of all users
+				BufferedReader reader = new BufferedReader(new FileReader("users.csv"));
+				reader.close();
+			} catch(Exception e) { // No users file so it is created
+				BufferedWriter writer = new BufferedWriter(new FileWriter("users.csv"));
+				writer.write("New User");
+				writer.close();
+			}
 			
 			// Save stage to be used by other functions
 			currentStage = primaryStage;
@@ -65,5 +81,4 @@ public class Main extends Application implements ActionListener{
 		currentStage.setScene(currentGame.getScene());
 	}
 	
-
 }

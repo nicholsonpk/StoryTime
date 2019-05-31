@@ -39,10 +39,6 @@ public class User{
 	
 	public void loadUser(String username) throws IOException {
 		
-		// set username from menu
-		dictionary.set(0, username);
-		
-		
 		// load csv for character
 		BufferedReader reader = new BufferedReader(new FileReader(username + ".csv"));
 			
@@ -95,11 +91,17 @@ public class User{
 		writer.write(line);
 		writer.newLine();
 		
-		for (int i = 2; i < dictionary.size(); i+=2)
+		if (dictionary.size() > 1)
 		{
-			line  = dictionary.get(i) + "," + dictionary.get(i+1);
-			writer.write(line);
-			writer.newLine();
+			for (int i = 1; i < dictionary.size(); i += 2)
+			{
+				line  = dictionary.get(i) + "," + dictionary.get(i+1);
+				writer.write(line);
+				if (i + 2 < dictionary.size())
+				{
+					writer.newLine();
+				}
+			}
 		}
 		
 		writer.close();
@@ -160,6 +162,22 @@ public class User{
 	public int getSpeed()
 	{
 		return speed;
+	}
+	
+	//
+	//
+	// SETS
+	//
+	//
+	public void setCharacterName(String name)
+	{
+		dictionary.set(0, name);
+		try {
+			saveUser();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 } // end User Class

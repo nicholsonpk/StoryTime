@@ -74,6 +74,11 @@ public class StoryClip {
 		choice3Speed = sentChoice3Speed;
 	}
 	
+	public void setText(String inputText)
+	{
+		bodyText = inputText;
+	}
+	
 	/*
 	 * GETS
 	 */
