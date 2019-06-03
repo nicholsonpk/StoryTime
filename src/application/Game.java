@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -187,8 +188,7 @@ public class Game {
 		text1.setText(storyClipArray.get(selectedStoryClip).getTitleText());
 		
 		// Store string as Text for TextFlow content
-		
-		
+
 		choice1.setText(storyClipArray.get(selectedStoryClip).getChoice(0));
 		choice2.setText(storyClipArray.get(selectedStoryClip).getChoice(1));
 		choice3.setText(storyClipArray.get(selectedStoryClip).getChoice(2));
@@ -197,21 +197,62 @@ public class Game {
 		// and replace the temp with that value
 		// If not found, it will ask user to enter one
 		
-		if (storyClipArray.get(selectedStoryClip).getText().indexOf("[") >= 0)
+		// Code from online... how to have different text types in one TextFlow
+//	     Text text1 = new Text("Big italic red text");
+//	     text1.setFill(Color.RED);
+//	     text1.setFont(Font.font("Helvetica", FontPosture.ITALIC, 40));
+//	     Text text2 = new Text(" little bold blue text");
+//	     text2.setFill(Color.BLUE);
+//	     text2.setFont(Font.font("Helvetica", FontWeight.BOLD, 10));
+//	     TextFlow textFlow = new TextFlow(text1, text2);
+		
+		// Start new ArrayList of Text
+		ArrayList<Text> totalTextArray = new ArrayList<Text>();
+		String totalText = storyClipArray.get(selectedStoryClip).getText();
+		
+		// Add each chunk of text to a new location (with their own formatting)
+		
+		boolean keepLooping = true;
+		
+		// Loop through entire text.
+		while (keepLooping)
 		{
-			int start = storyClipArray.get(selectedStoryClip).getText().indexOf("[");
-			int end = storyClipArray.get(selectedStoryClip).getText().indexOf("]");
-			
-			String returnedText = myChar.getDictionary(storyClipArray.get(selectedStoryClip).getText().substring(start + 1, end));
-			
-			storyClipArray.get(selectedStoryClip).setText(storyClipArray.get(selectedStoryClip).getText().replace(storyClipArray.get(selectedStoryClip).getText().substring(start, end + 1), returnedText));
+			// store currentLoc through indexOf
+			if (totalText.indexOf("[") >= 0)
+			{
+				// start and end points of word to replace
+				int start = totalText.indexOf("[");
+				int end = totalText.indexOf("]");
+				
+				// save the information preceding this
+				Text addingText = new Text(totalText.substring(0, start - 1));
+				totalTextArray.add(addingText);
+				
+				String returnedText = myChar.getDictionary(totalText.substring(start + 1, end));
+				
+				// Save the replaced text with proper formatting
+				Text addingText2 = new Text(" " + returnedText);
+				addingText2.setFill(Color.RED);
+				totalTextArray.add(addingText2);
+				
+				// Remove text already converted
+				totalText = totalText.substring(end + 1);
+				
+			} else {
+				Text addingText3 = new Text(totalText);
+				totalTextArray.add(addingText3);
+				keepLooping = false;
+			}
 		}
 		
-		Text thisText = new Text(storyClipArray.get(selectedStoryClip).getText());
-		
 		content.getChildren().clear();
-		content.getChildren().add(thisText);
-}
+	
+		// Then add them all to the content TextFlow
+		for (int i = 0; i < totalTextArray.size(); i++)
+		{
+			content.getChildren().add(totalTextArray.get(i));
+		}
+	}
 	
 	//
 	// GETS
