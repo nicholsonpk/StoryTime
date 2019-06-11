@@ -22,7 +22,7 @@ public class Loading {
  public ArrayList<StoryClip> loadThis(ArrayList<StoryClip> storyClipArray, int CSVValue)
  {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("Img-" + CSVValue + ".csv"));
+			BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/storyClips/Img-" + CSVValue + ".csv"));
 			
 			String line = null;
 			Scanner scanner = null;

@@ -135,6 +135,9 @@ public class Menu {
                         // Load the game scene
                     	root.changeScene();
                     	
+                    	// Pull first storyClip
+                    	main.currentGame.initialize();
+                    	
             		} else { // Cancelled
             			
             		} // end if
@@ -176,10 +179,10 @@ public class Menu {
 		// VBox for all contents
 		menuVBox = new VBox(newButton, slidersBox, exitButton);
 		menuVBox.setAlignment(Pos.CENTER);
-		menuVBox.setMinSize(800,600);
+		menuVBox.setMinSize(800,400);
 		
 		menuPane = new Pane(menuVBox);
-		menuPane.setMinSize(800,600);
+		menuPane.setMinSize(800,400);
 		menuPane.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		
 		menuScene = new Scene(menuPane);

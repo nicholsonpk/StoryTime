@@ -119,16 +119,49 @@ public class StoryClip {
 		switch (choiceNum)
 		{
 		case 0:
-			returnText = choice1Text + "," + choice1Style + "," + choice1Speed;
-			return returnText;
+			//returnText = choice1Text + "," + choice1Style + "," + choice1Speed;
+			return choice1Text;
 		case 1:
-			returnText = choice2Text + "," + choice2Style + "," + choice2Speed;
-			return returnText;
+			//returnText = choice2Text + "," + choice2Style + "," + choice2Speed;
+			return choice2Text;
 		case 2:
-			returnText = choice3Text + "," + choice3Style + "," + choice3Speed;
-			return returnText;
+			//returnText = choice3Text + "," + choice3Style + "," + choice3Speed;
+			return choice3Text;
 		default:
 			return returnText;
+		}
+	}
+	
+	
+	// Returns a choices Style value
+	public int getStyleInt(int choiceNum)
+	{
+		switch (choiceNum)
+		{
+		case 0:
+			return choice1Style;
+		case 1:
+			return choice2Style;
+		case 2:
+			return choice3Style;
+		default:
+			return 99;
+		}
+	}
+	
+	// Returns a choices Speed value
+	public int getSpeedInt(int choiceNum)
+	{
+		switch (choiceNum)
+		{
+		case 0:
+			return choice1Speed;
+		case 1:
+			return choice2Speed;
+		case 2:
+			return choice3Speed;
+		default:
+			return 99;
 		}
 	}
 }

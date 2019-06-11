@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -58,6 +59,7 @@ public class Game {
 	    GridPane.setRowIndex(viewImage, 2);
 	    
 		text1 = new Text("TITLE"); 
+		text1.setTextAlignment(TextAlignment.CENTER);
 		gridpane.add(text1, 2, 1);
 		gridpane.setAlignment(Pos.CENTER);
 		
@@ -96,17 +98,39 @@ public class Game {
 	    scene.getStylesheets().add(getClass().getResource("application.css").toString());
 	     
 	    text1.getStyleClass().add("header");
+	   
 	}
 	
 	//Creating the mouse event handler 
     EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
        @Override 
        public void handle(MouseEvent e) { 
-    	   // Get that buttons values
-    	   // Update the character
+    	   
+    	 //Figure out which button was pressed
+    	   int buttonNumberPressed = 0;
+    	   
+    	   if (e.getSource() == choice1)
+    	   {
+    		   buttonNumberPressed = 0;
+    	   } else if (e.getSource() == choice2)
+    	   {
+    		   buttonNumberPressed = 1;
+    	   } else if (e.getSource() == choice3)
+    	   {
+    		   buttonNumberPressed = 2;
+    	   }
+    	   
+    	   // Set that buttons values for the character
+    	   myChar.setStyle(storyClipArray.get(selectedStoryClip).getStyleInt(buttonNumberPressed));
+    	   myChar.setSpeed(storyClipArray.get(selectedStoryClip).getSpeedInt(buttonNumberPressed));
+    	   
     	   // Select new storyClip
+    	   chooseNextStoryClip();
+
     	   // Display storyClip
     	   loadNextStoryClip();
+    	   
+    	   // Save character
     	   saveChar();
        } 
     };  
@@ -149,13 +173,11 @@ public class Game {
 		
 	}
 	
-	//
-	// Loads a CSV at random
-	// Then it finds which clips the user qualifies for
-	// Then displays this to the fields
-	//
 	
-	public void loadNextStoryClip()
+	// Randomly chooses a storyClip from the total
+	// number and avoids repeats
+	
+	public void chooseNextStoryClip()
 	{
 		ArrayList<Integer> possibleStoryClip = new ArrayList<Integer>();
 		
@@ -164,11 +186,11 @@ public class Game {
 		selectedCSVFile  = r.nextInt(139) + 1;
 		selectedStoryClip = 0;
 		
-		selectedCSVFile = 1;
+		// Testing only
+		selectedCSVFile = 139;
 		
+		// Pull that into memory to check number of storyclips available
 		storyClipArray = loadedData.loadThis(storyClipArray, selectedCSVFile);
-		
-		getNewImage(selectedCSVFile);
 		
 		// Loop through array to get list of available entries
 		for (int i=0; i < storyClipArray.size(); i++)
@@ -182,8 +204,27 @@ public class Game {
 		}
 		
 		// Pick one of the storyClips
-		selectedStoryClip = r.nextInt(possibleStoryClip.size());
+		if (possibleStoryClip.size() > 0)
+		{
+			selectedStoryClip = r.nextInt(possibleStoryClip.size());
+		} else { // 	If no storyClips apply then send the first one
+			// 			This shouldn't be the case but this stops errors
+			selectedStoryClip = 0;
+		}
 		
+	}
+	
+	
+	//
+	// Loads a CSV at random
+	// Then it finds which clips the user qualifies for
+	// Then displays this to the fields
+	//
+	
+	public void loadNextStoryClip()
+	{
+		getNewImage(selectedCSVFile);
+	
 		// Set clip to fields
 		text1.setText(storyClipArray.get(selectedStoryClip).getTitleText());
 		
@@ -236,7 +277,7 @@ public class Game {
 				totalTextArray.add(addingText2);
 				
 				// Remove text already converted
-				totalText = totalText.substring(end + 1);
+				totalText = totalText.substring(end + 1, totalText.length());
 				
 			} else {
 				Text addingText3 = new Text(totalText);
@@ -252,6 +293,21 @@ public class Game {
 		{
 			content.getChildren().add(totalTextArray.get(i));
 		}
+		
+	}
+	
+	// Initialization to start storyClip
+	// when user logs in
+	
+	public void initialize()
+	{
+ 	   // Select new storyClip
+ 	   chooseNextStoryClip();
+
+ 	   // Display storyClip
+ 	   loadNextStoryClip();
+ 	   
+ 	  saveChar();
 	}
 	
 	//

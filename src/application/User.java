@@ -180,4 +180,17 @@ public class User{
 		}
 	}
 	
+	
+	// All values *3 so its still based around 100 total char growth
+	// but it takes 3 times less screens to get there
+	public void setStyle(int value)
+	{
+		style += value * 3;
+	}
+	
+	public void setSpeed(int value)
+	{
+		speed += value * 3;
+	}
+	
 } // end User Class
