@@ -160,7 +160,7 @@ public class Game {
 	
 	public static void getNewImage(int imageNumber)
 	{
-	    Image image = new Image("File:///" + System.getProperty("user.dir") + "/images/SpellBook05_" + imageNumber + ".png");
+	    Image image = new Image("File:///" + System.getProperty("user.dir") + "/images/WesternIcons_" + imageNumber + ".png");
 	    viewImage.setImage(image);
 	    text1.setText(Integer.toString(imageNumber));
 	}
@@ -181,13 +181,13 @@ public class Game {
 	{
 		ArrayList<Integer> possibleStoryClip = new ArrayList<Integer>();
 		
-		// Random value 1-139
+		// Random value 1-106
 		Random r = new Random();
-		selectedCSVFile  = r.nextInt(139) + 1;
+		selectedCSVFile  = r.nextInt(106) + 1;
 		selectedStoryClip = 0;
 		
 		// Testing only
-		selectedCSVFile = 139;
+		//selectedCSVFile = 1;
 		
 		// Pull that into memory to check number of storyclips available
 		storyClipArray = loadedData.loadThis(storyClipArray, selectedCSVFile);
