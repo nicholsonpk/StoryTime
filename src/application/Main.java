@@ -37,7 +37,7 @@ public class Main extends Application implements ActionListener{
 			// Save stage to be used by other functions
 			currentStage = primaryStage;
 			currentStage.setMinWidth(800);
-			currentStage.setHeight(400);
+			currentStage.setHeight(800);
 			
 			// Show Start/Options/Exit stage first
 			Menu pauseMenu = new Menu(this);

@@ -16,11 +16,17 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -45,13 +51,14 @@ public class Game {
 	private Button choice2;
 	private Button choice3;
 	
-	GridPane gridpane;
+	static GridPane gridpane;
 	
-	Scene scene;
+	static Scene scene;
 	
 	public Game()
 	{
 		gridpane = new GridPane();
+		gridpane.setMinSize(800, 800);
 		
 	    viewImage = new ImageView();
 	    gridpane.getChildren().add(viewImage);
@@ -59,7 +66,8 @@ public class Game {
 	    GridPane.setRowIndex(viewImage, 2);
 	    
 		text1 = new Text("TITLE"); 
-		text1.setTextAlignment(TextAlignment.CENTER);
+		//text1.setBoundsType(TextBoundsType.VISUAL);
+		//text1.setTextAlignment(TextAlignment.RIGHT);
 		gridpane.add(text1, 2, 1);
 		gridpane.setAlignment(Pos.CENTER);
 		
@@ -94,6 +102,8 @@ public class Game {
 	    gridpane.setHgap(5);
 		
 	    //Creating a scene object 
+	    gridpane.setBackground(null);
+	    gridpane.setAlignment(Pos.CENTER);
 	    scene = new Scene(gridpane);  
 	    scene.getStylesheets().add(getClass().getResource("application.css").toString());
 	     
@@ -163,6 +173,7 @@ public class Game {
 	    Image image = new Image("File:///" + System.getProperty("user.dir") + "/images/WesternIcons_" + imageNumber + ".png");
 	    viewImage.setImage(image);
 	    text1.setText(Integer.toString(imageNumber));
+	    scene.setFill(new ImagePattern(image));
 	}
 	
 	public void startNewUser(String newUserResultString)

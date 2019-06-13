@@ -179,10 +179,10 @@ public class Menu {
 		// VBox for all contents
 		menuVBox = new VBox(newButton, slidersBox, exitButton);
 		menuVBox.setAlignment(Pos.CENTER);
-		menuVBox.setMinSize(800,400);
+		menuVBox.setMinSize(800,800);
 		
 		menuPane = new Pane(menuVBox);
-		menuPane.setMinSize(800,400);
+		menuPane.setMinSize(800,800);
 		menuPane.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		
 		menuScene = new Scene(menuPane);
